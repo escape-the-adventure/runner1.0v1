@@ -18,8 +18,8 @@ public class PlayerPosition : MonoBehaviour {
 	}
 
 	void OnGUI() {
-		GUI.Label(new Rect(10, 10, 100, 20), "X: " + posX + " Y: " + posY);
-		GUI.Label(new Rect(10, 30, 100, 20), "COLOR: " + color);
+//		GUI.Label(new Rect(10, 10, 100, 20), "X: " + posX + " Y: " + posY);
+//		GUI.Label(new Rect(10, 30, 100, 20), "COLOR: " + color);
 	}
 		
 	void Update () {

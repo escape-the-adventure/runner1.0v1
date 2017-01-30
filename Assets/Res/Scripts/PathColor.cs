@@ -36,6 +36,8 @@ public class PathColor : MonoBehaviour {
 			pathMat.color = new Color(startColor.r + ( (PathData.instance.maxColor - PlayerPosition.color) * rStep ),
 										startColor.g + ( (PathData.instance.maxColor - PlayerPosition.color) * gStep ),
 										startColor.b + ( (PathData.instance.maxColor - PlayerPosition.color) * bStep ));
+
+			RenderSettings.fogColor = pathMat.color;
 		}
 
 	}

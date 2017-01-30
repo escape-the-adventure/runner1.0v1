@@ -6,14 +6,21 @@ public class Generator : MonoBehaviour {
 
 	// Use this for initialization
 
+	public static Generator instance;
+
 	public GameObject[] wall;
 	public GameObject floor;
 	public GameObject player;
 	public GameObject finish;
+	public bool initialized = false;
 
 	private int xSize = 0;
 	private int ySize = 0;
 	private int underPlayerWall = 1;
+
+	void Awake(){
+		instance = this;
+	}
 
 	void Start () {
 		LoadData ();
@@ -84,7 +91,7 @@ public class Generator : MonoBehaviour {
 			}
 
 		}
-
+		initialized = true;
 	}
 
 }

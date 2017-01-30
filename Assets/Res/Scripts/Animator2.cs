@@ -7,6 +7,7 @@ public class Animator2 : MonoBehaviour {
 	public static Animator2 instance;
 
 	public Animator animator;
+	public bool canStart = true;
 
 	void Awake () {
 		instance = this;
@@ -29,8 +30,10 @@ public class Animator2 : MonoBehaviour {
 	}
 
 	public void MoveForward(){
-		Debug.Log("[Animator2] Forward");
-		animator.SetTrigger("Forward");
+		if(canStart){
+			Debug.Log("[Animator2] Forward");
+			animator.SetTrigger("Forward");
+		}
 	}
 
 	public void TurnLeft(){
@@ -41,6 +44,11 @@ public class Animator2 : MonoBehaviour {
 	public void TurnRight(){
 		Debug.Log("[Animator2] Right");
 		animator.SetTrigger("TurnR");
+	}
+
+	public void Idle(){
+		Debug.Log("[Animator2] Idle");
+		animator.SetTrigger("Idle");
 	}
 
 }

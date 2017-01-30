@@ -35,27 +35,6 @@ public class SwipeController : MonoBehaviour {
 		}
 	}
 
-//	void Update() {
-//		if (Input.GetButton("Fire1")) {		//	ON MOUSE / TOUCH DOWN
-//			if (!click) {
-//				click = true;
-//				startX = Input.mousePosition.x;
-//				startY = Input.mousePosition.y;
-//			}
-//			else {
-//				endX = (Input.mousePosition.x - startX) / Screen.width;
-//				endY = (Input.mousePosition.y - startY) / Screen.height;
-//			}
-//		}
-//		else if (Input.GetButtonUp("Fire1")) {		//	ON MOUSE / TOUCH UP
-//			if (click) {
-//				click = false;
-//				endX = (Input.mousePosition.x - startX) / Screen.width;
-//				endY = (Input.mousePosition.y - startY) / Screen.height;
-//			}
-//		}
-//	}
-
 	void OnMouseDown() {
 		mouseDown = true;
 		startX = Input.mousePosition.x;
