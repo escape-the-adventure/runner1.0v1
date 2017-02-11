@@ -9,6 +9,9 @@ public class PlayerPosition : MonoBehaviour {
 	public int posY = 0;	//	z+1, x+1
 	public static int color = 0;
 
+	public int lastPosX = 0;
+	public int lastPosY = 0;
+
 	void Start () {
 		
 		if(playerPos == null){
@@ -28,6 +31,15 @@ public class PlayerPosition : MonoBehaviour {
 		
 			posX = Mathf.CeilToInt(playerPos.position.z - 0.5f) + 1;
 			posY = Mathf.CeilToInt(playerPos.position.x - 0.5f) + 1;
+
+			if(posX != lastPosX || posY != lastPosY){
+				lastPosX = posX;
+				lastPosY = posY;
+				if(Energy.instance.type == 1){
+					Energy.instance.LoseEnergy(1f);
+				}
+			}
+
 			color = PathData.instance.color[posX-1, posY-1];
 
 		}

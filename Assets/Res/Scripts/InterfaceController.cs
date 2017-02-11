@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class InterfaceController : MonoBehaviour {
 
+	public static InterfaceController instance;
+
 	public GameObject swipe;
 	public GameObject steeringBtns;
 	public GameObject startBtn;
@@ -17,6 +19,10 @@ public class InterfaceController : MonoBehaviour {
 	public bool checkRays = false;
 
 	public int steering = 0;	//	0 - SWIPE ; 1 - BTNS	//	SWIPE steering details in SwipeController.cs
+
+	void Awake(){
+		instance = this;
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -33,14 +39,18 @@ public class InterfaceController : MonoBehaviour {
 	void FixedUpdate(){
 		if(checkRays && Generator.instance.initialized){
 			if(!rcWall.collision && !rcFinish.collision){
-				loseScreen.SetActive(true);
-				ShowResults();
+				GameOver();
 			}
 			else if(rcFinish.collision){
 				winScreen.SetActive(true);
 				ShowResults();
 			}
 		}
+	}
+
+	public void GameOver(){
+		loseScreen.SetActive(true);
+		ShowResults();
 	}
 
 	void ShowResults(){
