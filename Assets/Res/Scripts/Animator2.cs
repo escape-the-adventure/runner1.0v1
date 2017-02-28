@@ -61,23 +61,23 @@ public class Animator2 : MonoBehaviour {
 	}
 
 	IEnumerator GetStraight(){
-		yield return new WaitForSeconds(0.55f);
+		yield return new WaitForSeconds(0.75f);
 		if (animator.GetCurrentAnimatorStateInfo(0).IsName("run_cycle"))
 		{
 			Debug.Log("[Animator2] {GetStraight}");
-			if(tr.rotation.eulerAngles.y < 95f && tr.rotation.eulerAngles.y > 85f){
+			if(tr.rotation.eulerAngles.y < 100f && tr.rotation.eulerAngles.y > 80f){
 				newRot = new Vector3(0f, 90f, 0f);
 				Debug.Log("[Animator2] {GetStraight} 90");
 			}
-			else if(tr.rotation.eulerAngles.y < 185f && tr.rotation.eulerAngles.y > 175f){
+			else if(tr.rotation.eulerAngles.y < 190f && tr.rotation.eulerAngles.y > 170f){
 				newRot = new Vector3(0f, 180f, 0f);
 				Debug.Log("[Animator2] {GetStraight} 180");
 			}
-			else if(tr.rotation.eulerAngles.y < 275f && tr.rotation.eulerAngles.y > 265f){
+			else if(tr.rotation.eulerAngles.y < 280f && tr.rotation.eulerAngles.y > 260f){
 				newRot = new Vector3(0f, 270f, 0f);
 				Debug.Log("[Animator2] {GetStraight} 270");
 			}
-			else if(tr.rotation.eulerAngles.y < 5f || tr.rotation.eulerAngles.y > 355f){
+			else if(tr.rotation.eulerAngles.y < 10f || tr.rotation.eulerAngles.y > 350f){
 				newRot = new Vector3(0f, 0f, 0f);
 				Debug.Log("[Animator2] {GetStraight} 0");
 			}
