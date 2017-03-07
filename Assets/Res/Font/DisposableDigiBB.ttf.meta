@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: aa2f0f546b17c44ff98e0faa5b6632bd
+timeCreated: 1488917595
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 110
+  forceTextureCase: -1
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: DisposableDigi BB
+  fontNames:
+  - DisposableDigi BB
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
