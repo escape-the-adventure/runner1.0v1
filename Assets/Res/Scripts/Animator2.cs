@@ -31,6 +31,10 @@ public class Animator2 : MonoBehaviour {
 			TurnRight();
 		}
 
+		if(Input.GetKeyDown(KeyCode.S)){
+			TurnAround();
+		}
+
 	}
 
 	public void MoveForward(){
@@ -53,6 +57,13 @@ public class Animator2 : MonoBehaviour {
 		animator.SetTrigger("TurnR");
 		StopCoroutine("GetStraight");
 		StartCoroutine("GetStraight");
+	}
+
+	public void TurnAround() {
+		Debug.Log ("[Animator2] TurnAround");
+		animator.SetTrigger ("TurnA");
+		StopCoroutine ("GetStraight");
+		StartCoroutine ("GetStrainght");
 	}
 
 	public void Idle(){
