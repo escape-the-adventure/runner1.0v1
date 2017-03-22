@@ -63,7 +63,7 @@ public class Animator2 : MonoBehaviour {
 		Debug.Log ("[Animator2] TurnAround");
 		animator.SetTrigger ("TurnA");
 		StopCoroutine ("GetStraight");
-		StartCoroutine ("GetStrainght");
+		StartCoroutine ("GetStraight");
 	}
 
 	public void Idle(){

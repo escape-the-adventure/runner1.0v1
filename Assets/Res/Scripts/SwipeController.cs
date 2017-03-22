@@ -79,6 +79,7 @@ public class SwipeController : MonoBehaviour {
 		}
 		else if (dirX == 0 && dirY == -1) {
 			Debug.Log ("[MouseController] Part : BM");
+			Animator2.instance.TurnAround();
 		}
 		else if (dirX == 1 && dirY == -1) {
 			Debug.Log ("[MouseController] Part : BR");
