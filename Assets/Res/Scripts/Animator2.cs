@@ -47,23 +47,23 @@ public class Animator2 : MonoBehaviour {
 
 	public void TurnLeft(){
 		Debug.Log("[Animator2] Left");
-		animator.SetTrigger("TurnL");
 		StopCoroutine("GetStraight");
 		StartCoroutine("GetStraight");
+		animator.SetTrigger("TurnL");
 	}
 
 	public void TurnRight(){
 		Debug.Log("[Animator2] Right");
-		animator.SetTrigger("TurnR");
 		StopCoroutine("GetStraight");
 		StartCoroutine("GetStraight");
+		animator.SetTrigger("TurnR");
 	}
 
 	public void TurnAround() {
 		Debug.Log ("[Animator2] TurnAround");
-		animator.SetTrigger ("TurnA");
 		StopCoroutine ("GetStraight");
 		StartCoroutine ("GetStraight");
+		animator.SetTrigger ("TurnA");
 	}
 
 	public void Idle(){
@@ -71,8 +71,17 @@ public class Animator2 : MonoBehaviour {
 		animator.SetTrigger("Idle");
 	}
 
+	public void Death(){
+		Debug.Log("[Animator2] Death");
+		animator.SetTrigger("Death");
+	}
+
 	IEnumerator GetStraight(){
-		yield return new WaitForSeconds(0.75f);
+		GameController.instance.canDie = false;
+		yield return new WaitForSeconds(0.5f);
+		GameController.instance.canDie = true;
+		yield return new WaitForSeconds(0.25f);
+//		yield return new WaitForSeconds(0.75f);
 		if (animator.GetCurrentAnimatorStateInfo(0).IsName("run_cycle"))
 		{
 			Debug.Log("[Animator2] {GetStraight}");

@@ -14,11 +14,9 @@ public class InterfaceController : MonoBehaviour {
 	public GameObject winScreen;
 	public GameObject loseScreen;
 
-	public RayController rcWall;
-	public RayController rcFinish;
-	public bool checkRays = false;
-
 	public int steering = 0;	//	0 - SWIPE ; 1 - BTNS	//	SWIPE steering details in SwipeController.cs
+
+	private bool win;
 
 	void Awake(){
 		instance = this;
@@ -28,35 +26,28 @@ public class InterfaceController : MonoBehaviour {
 	void Start () {
 		steering = PlayerPrefs.GetInt("steering", 0);
 		SetSteering();
-		StartCoroutine("Wait");
-	}
-
-	IEnumerator Wait (){
-		yield return new WaitForSeconds(1f);
-		checkRays = true;
-	}
-
-	void FixedUpdate(){
-		if(checkRays && Generator.instance.initialized){
-			if(!rcWall.collision && !rcFinish.collision){
-				GameOver();
-			}
-			else if(rcFinish.collision){
-				winScreen.SetActive(true);
-				ShowResults();
-			}
-		}
 	}
 
 	public void GameOver(){
-		loseScreen.SetActive(true);
-		ShowResults();
+		win = false;
+		StartCoroutine("ShowResults");
+		Animator2.instance.Death();
 	}
 
-	void ShowResults(){
-		checkRays = false;
-		Animator2.instance.canStart = false;
+	public void Win(){
+		win = false;
+		StartCoroutine("ShowResults");
 		Animator2.instance.Idle();
+	}
+
+	IEnumerator ShowResults(){
+		yield return new WaitForSeconds(1f);
+		if(win){
+			winScreen.SetActive(true);
+		}
+		else{
+			loseScreen.SetActive(true);
+		}
 	}
 
 	public void SetSteering(){
