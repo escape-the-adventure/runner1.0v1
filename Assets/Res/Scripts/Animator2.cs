@@ -11,6 +11,8 @@ public class Animator2 : MonoBehaviour {
 	public Transform tr;
 
 	Vector3 newRot = Vector3.zero;
+	Quaternion currentRot;
+	float currentLerp;
 
 	void Awake () {
 		instance = this;
@@ -100,6 +102,15 @@ public class Animator2 : MonoBehaviour {
 			else if(tr.rotation.eulerAngles.y < 10f || tr.rotation.eulerAngles.y > 350f){
 				newRot = new Vector3(0f, 0f, 0f);
 				Debug.Log("[Animator2] {GetStraight} 0");
+			}
+
+			currentRot = tr.rotation;
+			currentLerp = 0f;
+
+			for(int i=0; i<10; i++){
+				tr.rotation = Quaternion.Lerp(currentRot, Quaternion.Euler(newRot), currentLerp);
+				currentLerp += 0.1f;
+				yield return new WaitForSeconds(0.1f);
 			}
 			tr.rotation = Quaternion.Euler(newRot);
 		}
