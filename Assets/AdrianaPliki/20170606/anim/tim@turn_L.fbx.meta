@@ -90,7 +90,7 @@ ModelImporter:
     4300004: Cube.006
     4300006: Cube.007
     4300008: Cube.008
-    7400000: Scene
+    7400000: turn_L
     9500000: //RootNode
     13700000: Cube
     13700002: Cube.001
@@ -117,7 +117,115 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: turn_L
+      takeName: Scene
+      firstFrame: 0
+      lastFrame: 27
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cube
+        weight: 1
+      - path: Cube.001
+        weight: 1
+      - path: Cube.006
+        weight: 1
+      - path: Cube.007
+        weight: 1
+      - path: Cube.008
+        weight: 1
+      - path: rig_tim
+        weight: 1
+      - path: rig_tim/root
+        weight: 1
+      - path: rig_tim/root/hips_raw
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/back_pack_raw
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/back_pack_raw/cover_base
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/back_pack_raw/cover_base/cover
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/back_pack_raw/cover_base/cover/belt_1_L
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/back_pack_raw/cover_base/cover/belt_1_L/belt_2_L
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/back_pack_raw/cover_base/cover/belt_1_L/belt_2_L/belt_3_L
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/back_pack_raw/cover_base/cover/belt_1_R
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/back_pack_raw/cover_base/cover/belt_1_R/belt_2_R
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/back_pack_raw/cover_base/cover/belt_1_R/belt_2_R/belt_3_R
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/neck
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/neck/head
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/shoulder_L
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/shoulder_L/arm_L
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/shoulder_L/arm_L/forearm_L
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/shoulder_L/arm_L/forearm_L/hand_L
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/shoulder_L/arm_L/forearm_L/hand_L/finger_L
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/shoulder_R
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/shoulder_R/arm_R
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/shoulder_R/arm_R/forearm_R
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/shoulder_R/arm_R/forearm_R/hand_R
+        weight: 1
+      - path: rig_tim/root/hips_raw/spine_raw/chest_raw/shoulder_R/arm_R/forearm_R/hand_R/finger_R
+        weight: 1
+      - path: rig_tim/root/hips_raw/thigh_L
+        weight: 1
+      - path: rig_tim/root/hips_raw/thigh_L/shin_L
+        weight: 1
+      - path: rig_tim/root/hips_raw/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: rig_tim/root/hips_raw/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: rig_tim/root/hips_raw/thigh_R
+        weight: 1
+      - path: rig_tim/root/hips_raw/thigh_R/shin_R
+        weight: 1
+      - path: rig_tim/root/hips_raw/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: rig_tim/root/hips_raw/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []

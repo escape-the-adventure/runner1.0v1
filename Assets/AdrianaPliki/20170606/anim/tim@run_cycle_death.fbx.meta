@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: c1f7749b169a40f4298861e9c3454557
-timeCreated: 1496773830
+guid: 7476cb43ef992e242944f6740e88b1bc
+timeCreated: 1496805187
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -90,7 +90,7 @@ ModelImporter:
     4300004: Cube.006
     4300006: Cube.007
     4300008: Cube.008
-    7400000: turn_R
+    7400000: run_cycle_death
     9500000: //RootNode
     13700000: Cube
     13700002: Cube.001
@@ -119,10 +119,10 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: turn_R
+      name: run_cycle_death
       takeName: Scene
       firstFrame: 0
-      lastFrame: 27
+      lastFrame: 60
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
