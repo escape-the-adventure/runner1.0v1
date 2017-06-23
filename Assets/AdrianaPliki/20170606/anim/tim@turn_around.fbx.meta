@@ -122,7 +122,7 @@ ModelImporter:
       name: turn_around
       takeName: Scene
       firstFrame: 0
-      lastFrame: 40
+      lastFrame: 48
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
