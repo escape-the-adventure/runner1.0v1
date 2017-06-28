@@ -10,6 +10,7 @@ public class Animator2 : MonoBehaviour {
 
 	public bool canStart = true;
 	public bool forceStraight = false;
+	public bool canMove = true;
 
 	public Transform tr;
 
@@ -44,49 +45,60 @@ public class Animator2 : MonoBehaviour {
 
 	public void MoveForward(){
 		if(canStart){
-			Debug.Log("[Animator2] Forward");
+//			Debug.Log("[Animator2] Forward");
 			animator.SetTrigger("Forward");
 			Energy.instance.StartLoseEnergy();
 		}
 	}
 
 	public void TurnLeft(){
-		Debug.Log("[Animator2] Left");
-		StopCoroutine("GetStraight");
-		StartCoroutine("GetStraight");
-		animator.SetTrigger("TurnL");
+		if(canMove){
+//			Debug.Log("[Animator2] Left");
+			StopCoroutine("GetStraight");
+			StartCoroutine("GetStraight");
+			animator.SetTrigger("TurnL");
+		}
 	}
 
 	public void TurnRight(){
-		Debug.Log("[Animator2] Right");
-		StopCoroutine("GetStraight");
-		StartCoroutine("GetStraight");
-		animator.SetTrigger("TurnR");
+		if(canMove){
+//			Debug.Log("[Animator2] Right");
+			StopCoroutine("GetStraight");
+			StartCoroutine("GetStraight");
+			animator.SetTrigger("TurnR");
+		}
 	}
 
 	public void TurnAround() {
-		Debug.Log ("[Animator2] TurnAround");
-		StopCoroutine ("GetStraight");
-		StartCoroutine ("GetStraight");
-		animator.SetTrigger ("TurnA");
+		if(canMove){
+//			Debug.Log ("[Animator2] TurnAround");
+			StopCoroutine ("GetStraight");
+			StartCoroutine ("GetStraight");
+			animator.SetTrigger ("TurnA");
+		}
 	}
 
 	public void Idle(){
-		Debug.Log("[Animator2] Idle");
+//		Debug.Log("[Animator2] Idle");
 		animator.SetTrigger("Idle");
 	}
 
 	public void Death(){
-		Debug.Log("[Animator2] Death");
+//		Debug.Log("[Animator2] Death");
 		animator.SetTrigger("Death");
+		canMove = false;
 	}
 
 	IEnumerator GetStraight(){
 
 		if(forceStraight){
-			GameController.instance.canDie = false;
+//			GameController.instance.canDie = false;
+			canMove = false;
 			yield return new WaitForSeconds(0.5f);
-			GameController.instance.canDie = true;
+//			if(!GameController.instance.gameOver){
+//				canMove = true;
+//			}
+//			GameController.instance.canDie = true;
 			yield return new WaitForSeconds(0.25f);
 	//		yield return new WaitForSeconds(0.75f);
 			if (animator.GetCurrentAnimatorStateInfo(0).IsName("run_cycle"))
@@ -118,6 +130,14 @@ public class Animator2 : MonoBehaviour {
 					yield return new WaitForSeconds(0.1f);
 				}
 				tr.rotation = Quaternion.Euler(newRot);
+			}
+
+		}
+		else{
+			canMove = false;
+			yield return new WaitForSeconds(0.5f);
+			if(!GameController.instance.gameOver){
+				canMove = true;
 			}
 		}
 	}

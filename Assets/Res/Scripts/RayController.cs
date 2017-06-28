@@ -47,8 +47,8 @@ public class RayController : MonoBehaviour {
 
 		Physics.Raycast(tr.position, rayVector, out hit, rayDistance, layerMask.value);
 
-		if (draw) {
-			Debug.DrawRay (tr.position, rayVector * rayDistance, Color.red);
+		if (draw && Animator2.instance.canMove) {
+			Debug.DrawRay (tr.position, rayVector * rayDistance, Color.red, 3f);
 		}
 
 		if (hit.collider != null) {
