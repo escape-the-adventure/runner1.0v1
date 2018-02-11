@@ -4,9 +4,11 @@ using UnityEngine.UI;
 
 public class InputController : MonoBehaviour {
 
-	public enum State {Idle, Walk, WalkL, WalkR, Run, RunL, RunR};
+	public enum State {Idle, Walk, Run, Jump};
 
 	public State currentState = State.Idle;
+
+    public bool smoothRotation = false;
 
 	public Text inputXText;
 	public Text inputYText;
@@ -23,6 +25,7 @@ public class InputController : MonoBehaviour {
 	public Animator timAnim;
 
 	public Transform tim;
+    public Rigidbody rigid;
 
 	public Transform visualizer;
 
@@ -33,18 +36,24 @@ public class InputController : MonoBehaviour {
 	public float walkTurnSpeed = 10f;
 	public float runTurnSpeed = 20f;
 	public float runStart = 0.8f;
+    public float jumpForce = 100f;
+    public float gravity = -40f;
 
 	Vector2 inputVec;
 
-	bool sprint = false;
+	public bool grouded = false;
+
 
 	// Use this for initialization
 	void Start () {
-	
-	}
+        Physics.gravity = new Vector3(0, gravity, 0);
+    }
 	
 	// Update is called once per frame
 	void Update () {
+
+        CheckGround();
+
 		posX = Input.GetAxis ("Horizontal");
 		posY = Input.GetAxis ("Vertical");
 
@@ -56,10 +65,6 @@ public class InputController : MonoBehaviour {
 			inputYText.text = "InputY: " + posY;
 		}
 
-		directionTr.position = tim.position;
-		directionTr.position = new Vector3 (directionTr.position.x + posX, directionTr.position.y, directionTr.position.z + posY);
-
-		directionTr.parent = tim;
 
 		inputVec = new Vector2 (posX, posY);
 
@@ -79,72 +84,119 @@ public class InputController : MonoBehaviour {
 			visualizer.localPosition = new Vector3 (posX, posY, visualizer.localPosition.z);
 		}
 
-		directionX = directionTr.localPosition.x * 10f;
-		directionX = Mathf.Round(directionX) / 10f;
+        UpdateDirection();
 
-		directionY = directionTr.localPosition.z * 10f;
-		directionY = Mathf.Round(directionY) / 10f;
+        if (Input.GetKeyDown(KeyCode.Joystick1Button1))
+        {
+            if (currentState != State.Jump && grouded)
+            {
+                //SetTrigger("jump");
+                ResetTriggers();
+                currentState = State.Jump;
+                rigid.AddForce(tim.up * jumpForce);
+            }
+        }
 
-
-		if(currentSpeed > 0f){
+        if (currentSpeed > 0f){
 
 			if (currentSpeed < runStart) {																		//	walk
 
-				if(directionX < 0f || (directionX == 0f && directionY < 0f)) {
-					if(currentState != State.WalkL){
-						SetTrigger("walkL");
-						currentState = State.WalkL;
-					}
-					tim.Rotate(-Vector3.up * walkTurnSpeed * Time.deltaTime);
-					tim.position += tim.forward * walkSpeed * Time.deltaTime;
+                if (currentState != State.Walk && grouded)
+                {
+                    SetTrigger("walk");
+                    currentState = State.Walk;
+                }
+
+                tim.position += tim.forward * walkSpeed * Time.deltaTime;
+
+                if (directionX < 0f || (directionX == 0f && directionY < 0f)) {
+                    if (smoothRotation)
+                    {
+                        tim.Rotate(-Vector3.up * walkTurnSpeed * Time.deltaTime);
+                        UpdateDirection();
+
+                        if (directionX > 0f)
+                        {
+                            tim.LookAt(directionTr);
+                        }
+                    }
+                    else
+                    {
+                        tim.LookAt(directionTr);
+                    }
+                    
 				}
-				else if(directionX > 0f){
-					if(currentState != State.WalkR){
-						SetTrigger("walkR");
-						currentState = State.WalkR;
-					}
-					tim.Rotate(Vector3.up * walkTurnSpeed * Time.deltaTime);
-					tim.position += tim.forward * walkSpeed * Time.deltaTime;
-				}
-				else{
-					if(currentState != State.Walk){
-						SetTrigger("walk");
-						currentState = State.Walk;
-					}
-					tim.position += tim.forward * walkSpeed * Time.deltaTime;
-				}
+				else if(directionX > 0f)
+                {
+                    if (smoothRotation)
+                    {
+                        tim.Rotate(Vector3.up * walkTurnSpeed * Time.deltaTime);
+                        UpdateDirection();
+
+                        if (directionX < 0f)
+                        {
+                            tim.LookAt(directionTr);
+                        }
+
+                    }
+                    else
+                    {
+                        tim.LookAt(directionTr);
+                    }
+                    
+                }
 			}
 			else {																								//	run
 
-				if(directionX < 0f || (directionX == 0f && directionY < 0f)) {
-					if(currentState != State.RunL){
-						SetTrigger("runL");
-						currentState = State.RunL;
-					}
-					tim.Rotate(-Vector3.up * runTurnSpeed * Time.deltaTime);
-					tim.position += tim.forward * runSpeed * Time.deltaTime;
-				}
+                if (currentState != State.Run && grouded)
+                {
+                    SetTrigger("run");
+                    currentState = State.Run;
+                }
+
+                tim.position += tim.forward * runSpeed * Time.deltaTime;
+
+                if (directionX < 0f || (directionX == 0f && directionY < 0f)) {
+                    if (smoothRotation)
+                    {
+                       tim.Rotate(-Vector3.up * runTurnSpeed * Time.deltaTime);
+                        UpdateDirection();
+
+                        if (directionX > 0f)
+                        {
+                            tim.LookAt(directionTr);
+                        }
+                    }
+                    else
+                    {
+                        tim.LookAt(directionTr);
+                    }
+                    
+                }
 				else if(directionX > 0f){
-					if(currentState != State.RunR){
-						SetTrigger("runR");
-						currentState = State.RunR;
-					}
-					tim.Rotate(Vector3.up * runTurnSpeed * Time.deltaTime);
-					tim.position += tim.forward * runSpeed * Time.deltaTime;
-				}
-				else{
-					if(currentState != State.Run){
-						SetTrigger("run");
-						currentState = State.Run;
-					}
-					tim.position += tim.forward * runSpeed * Time.deltaTime;
-				}
+                    if (smoothRotation)
+                    {
+                       tim.Rotate(Vector3.up * runTurnSpeed * Time.deltaTime);
+                        UpdateDirection();
+
+                        if (directionX < 0f)
+                        {
+                            tim.LookAt(directionTr);
+                        }
+                    }
+                    else
+                    {
+                        tim.LookAt(directionTr);
+                    }
+                    
+                }
 				
 			}
 
 		}
 		else{																									//	idle
-			if(currentState != State.Idle){
+			if(currentState != State.Idle && grouded)
+            {
 				SetTrigger("idle");
 				currentState = State.Idle;
 			}
@@ -160,13 +212,30 @@ public class InputController : MonoBehaviour {
 	public void ResetTriggers(){
 		timAnim.ResetTrigger("walk");
 		timAnim.ResetTrigger("idle");
-		timAnim.ResetTrigger("walkL");
-		timAnim.ResetTrigger("walkR");
 		timAnim.ResetTrigger("run");
-		timAnim.ResetTrigger("runL");
-		timAnim.ResetTrigger("runR");
 	}
 
+    public void UpdateDirection()
+    {
+        directionTr.position = tim.position;
+        directionTr.position = new Vector3(directionTr.position.x + posX, directionTr.position.y, directionTr.position.z + posY);
 
+        directionTr.parent = tim;
+
+        directionX = directionTr.localPosition.x;
+        directionY = directionTr.localPosition.z;
+    }
+
+    public void CheckGround()
+    {
+        if(Physics.Raycast(tim.position, -tim.up, 0.2f))
+        {
+            grouded = true;
+        }
+        else
+        {
+            grouded = false;
+        }
+    }
 
 }
