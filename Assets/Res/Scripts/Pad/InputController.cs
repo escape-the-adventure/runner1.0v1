@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class InputController : MonoBehaviour {
 
-	public enum State {Idle, Walk, Run, Jump};
+	public enum State {None, Idle, Walk, Run, Jump};
 
 	public State currentState = State.Idle;
 
@@ -90,8 +90,9 @@ public class InputController : MonoBehaviour {
         {
             if (currentState != State.Jump && grouded)
             {
-                //SetTrigger("jump");
-                ResetTriggers();
+                SetTrigger("jump");
+                //SetTrigger("idle");
+                //ResetTriggers();
                 currentState = State.Jump;
                 rigid.AddForce(tim.up * jumpForce);
             }
@@ -101,7 +102,7 @@ public class InputController : MonoBehaviour {
 
 			if (currentSpeed < runStart) {																		//	walk
 
-                if (currentState != State.Walk && grouded)
+                if (currentState != State.Walk && grouded && !IsJumping())
                 {
                     SetTrigger("walk");
                     currentState = State.Walk;
@@ -148,7 +149,7 @@ public class InputController : MonoBehaviour {
 			}
 			else {																								//	run
 
-                if (currentState != State.Run && grouded)
+                if (currentState != State.Run && grouded && !IsJumping())
                 {
                     SetTrigger("run");
                     currentState = State.Run;
@@ -195,7 +196,7 @@ public class InputController : MonoBehaviour {
 
 		}
 		else{																									//	idle
-			if(currentState != State.Idle && grouded)
+			if(currentState != State.Idle && grouded && !IsJumping())
             {
 				SetTrigger("idle");
 				currentState = State.Idle;
@@ -230,12 +231,23 @@ public class InputController : MonoBehaviour {
     {
         if(Physics.Raycast(tim.position, -tim.up, 0.2f))
         {
+
+            if(!grouded && currentState == State.Jump)
+            {
+                currentState = State.None;
+            }
+
             grouded = true;
         }
         else
         {
             grouded = false;
         }
+    }
+
+    public bool IsJumping()
+    {
+        return (currentState == State.Jump);
     }
 
 }
