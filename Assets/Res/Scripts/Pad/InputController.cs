@@ -4,250 +4,164 @@ using UnityEngine.UI;
 
 public class InputController : MonoBehaviour {
 
-	public enum State {None, Idle, Walk, Run, Jump};
-
-	public State currentState = State.Idle;
-
-    public bool smoothRotation = false;
+    public static InputController instance;
 
 	public Text inputXText;
 	public Text inputYText;
-	public Text speedText;
 
 	public float posX;
 	public float posY;
 
-	public float directionX;
-	public float directionY;
+	public Vector2 inputVec;
 
-	public float currentSpeed;
+    public bool jumpKey = false;
 
-	public Animator timAnim;
+    public bool logButtons = false;
 
-	public Transform tim;
-    public Rigidbody rigid;
-
-	public Transform visualizer;
-
-	public Transform directionTr;
-
-	public float walkSpeed = 10f;
-	public float runSpeed = 20f;
-	public float walkTurnSpeed = 10f;
-	public float runTurnSpeed = 20f;
-	public float runStart = 0.8f;
-    public float jumpForce = 100f;
-    public float gravity = -40f;
-
-	Vector2 inputVec;
-
-	public bool grouded = false;
-
-
-	// Use this for initialization
-	void Start () {
-        Physics.gravity = new Vector3(0, gravity, 0);
+    private void Awake()
+    {
+        instance = this;
     }
-	
-	// Update is called once per frame
-	void Update () {
 
-        CheckGround();
+    // Update is called once per frame
+    void Update() {
 
-		posX = Input.GetAxis ("Horizontal");
-		posY = Input.GetAxis ("Vertical");
+        posX = Input.GetAxis("Horizontal");
+        posY = Input.GetAxis("Vertical");
 
-		if(inputXText){
-			inputXText.text = "InputX: " + posX;
-		}
-
-		if(inputYText){
-			inputYText.text = "InputY: " + posY;
-		}
-
-
-		inputVec = new Vector2 (posX, posY);
-
-		if (inputVec.magnitude > 1f) {
-			inputVec.Normalize ();
-		}
-
-		currentSpeed = inputVec.magnitude;
-		currentSpeed = currentSpeed * 10f;
-		currentSpeed = Mathf.Round(currentSpeed) / 10f;
-
-		if(speedText){
-			speedText.text = "Speed: " + currentSpeed;
-		}
-
-		if (visualizer) {
-			visualizer.localPosition = new Vector3 (posX, posY, visualizer.localPosition.z);
-		}
-
-        UpdateDirection();
-
-        if (Input.GetKeyDown(KeyCode.Joystick1Button1))
-        {
-            if (currentState != State.Jump && grouded)
-            {
-                SetTrigger("jump");
-                //SetTrigger("idle");
-                //ResetTriggers();
-                currentState = State.Jump;
-                rigid.AddForce(tim.up * jumpForce);
-            }
+        if (inputXText) {
+            inputXText.text = "InputX: " + posX;
         }
 
-        if (currentSpeed > 0f){
+        if (inputYText) {
+            inputYText.text = "InputY: " + posY;
+        }
 
-			if (currentSpeed < runStart) {																		//	walk
 
-                if (currentState != State.Walk && grouded && !IsJumping())
-                {
-                    SetTrigger("walk");
-                    currentState = State.Walk;
-                }
+        inputVec = new Vector2(posX, posY);
 
-                tim.position += tim.forward * walkSpeed * Time.deltaTime;
+        if (inputVec.magnitude > 1f) {
+            inputVec.Normalize();
+        }
 
-                if (directionX < 0f || (directionX == 0f && directionY < 0f)) {
-                    if (smoothRotation)
-                    {
-                        tim.Rotate(-Vector3.up * walkTurnSpeed * Time.deltaTime);
-                        UpdateDirection();
-
-                        if (directionX > 0f)
-                        {
-                            tim.LookAt(directionTr);
-                        }
-                    }
-                    else
-                    {
-                        tim.LookAt(directionTr);
-                    }
-                    
-				}
-				else if(directionX > 0f)
-                {
-                    if (smoothRotation)
-                    {
-                        tim.Rotate(Vector3.up * walkTurnSpeed * Time.deltaTime);
-                        UpdateDirection();
-
-                        if (directionX < 0f)
-                        {
-                            tim.LookAt(directionTr);
-                        }
-
-                    }
-                    else
-                    {
-                        tim.LookAt(directionTr);
-                    }
-                    
-                }
-			}
-			else {																								//	run
-
-                if (currentState != State.Run && grouded && !IsJumping())
-                {
-                    SetTrigger("run");
-                    currentState = State.Run;
-                }
-
-                tim.position += tim.forward * runSpeed * Time.deltaTime;
-
-                if (directionX < 0f || (directionX == 0f && directionY < 0f)) {
-                    if (smoothRotation)
-                    {
-                       tim.Rotate(-Vector3.up * runTurnSpeed * Time.deltaTime);
-                        UpdateDirection();
-
-                        if (directionX > 0f)
-                        {
-                            tim.LookAt(directionTr);
-                        }
-                    }
-                    else
-                    {
-                        tim.LookAt(directionTr);
-                    }
-                    
-                }
-				else if(directionX > 0f){
-                    if (smoothRotation)
-                    {
-                       tim.Rotate(Vector3.up * runTurnSpeed * Time.deltaTime);
-                        UpdateDirection();
-
-                        if (directionX < 0f)
-                        {
-                            tim.LookAt(directionTr);
-                        }
-                    }
-                    else
-                    {
-                        tim.LookAt(directionTr);
-                    }
-                    
-                }
-				
-			}
-
-		}
-		else{																									//	idle
-			if(currentState != State.Idle && grouded && !IsJumping())
-            {
-				SetTrigger("idle");
-				currentState = State.Idle;
-			}
-		}
-
-	}
-
-	public void SetTrigger(string triggerName){
-		ResetTriggers();
-		timAnim.SetTrigger(triggerName);
-	}
-
-	public void ResetTriggers(){
-		timAnim.ResetTrigger("walk");
-		timAnim.ResetTrigger("idle");
-		timAnim.ResetTrigger("run");
-	}
-
-    public void UpdateDirection()
-    {
-        directionTr.position = tim.position;
-        directionTr.position = new Vector3(directionTr.position.x + posX, directionTr.position.y, directionTr.position.z + posY);
-
-        directionTr.parent = tim;
-
-        directionX = directionTr.localPosition.x;
-        directionY = directionTr.localPosition.z;
-    }
-
-    public void CheckGround()
-    {
-        if(Physics.Raycast(tim.position, -tim.up, 0.2f))
+        if (Input.GetKeyDown(KeyCode.Joystick1Button1) || Input.GetKeyDown(KeyCode.Space))
         {
-
-            if(!grouded && currentState == State.Jump)
-            {
-                currentState = State.None;
-            }
-
-            grouded = true;
+            jumpKey = true;
         }
         else
         {
-            grouded = false;
+            jumpKey = false;
         }
-    }
 
-    public bool IsJumping()
-    {
-        return (currentState == State.Jump);
-    }
+        if (Input.GetKeyDown(KeyCode.Joystick1Button9))
+        {
+            PlayerController.instance.ResetPos();
+        }
+
+        if (logButtons) {
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button0))
+            {
+                Debug.Log("Btn  0");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button1))
+            {
+                Debug.Log("Btn  1");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button2))
+            {
+                Debug.Log("Btn  2");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button3))
+            {
+                Debug.Log("Btn  3");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button4))
+            {
+                Debug.Log("Btn  4");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button5))
+            {
+                Debug.Log("Btn  5");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button6))
+            {
+                Debug.Log("Btn  6");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button7))
+            {
+                Debug.Log("Btn  7");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button8))
+            {
+                Debug.Log("Btn  8");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button9))
+            {
+                Debug.Log("Btn  9");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button10))
+            {
+                Debug.Log("Btn  10");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button11))
+            {
+                Debug.Log("Btn  11");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button12))
+            {
+                Debug.Log("Btn  12");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button13))
+            {
+                Debug.Log("Btn  13");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button14))
+            {
+                Debug.Log("Btn  14");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button15))
+            {
+                Debug.Log("Btn  15");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button16))
+            {
+                Debug.Log("Btn  16");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button17))
+            {
+                Debug.Log("Btn  17");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button18))
+            {
+                Debug.Log("Btn  18");
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button19))
+            {
+                Debug.Log("Btn  19");
+            }
+
+        }
+
+	}
 
 }
